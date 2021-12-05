@@ -1895,6 +1895,16 @@ public class StreamExecutionEnvironment {
      * @return The result of the job execution, containing elapsed time and accumulators.
      * @throws Exception which occurs during job execution.
      */
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:     获取StreamGraph并执行
+                        1. getStreamGraph方法获取StreamGraph
+                            1.1
+                            1.2
+                        2. execute()方法执行treamGraph
+    */
     public JobExecutionResult execute() throws Exception {
         return execute(getStreamGraph());
     }
@@ -1926,6 +1936,12 @@ public class StreamExecutionEnvironment {
      * @return The result of the job execution, containing elapsed time and accumulators.
      * @throws Exception which occurs during job execution.
      */
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:     执行StreamGraph
+    */
     @Internal
     public JobExecutionResult execute(StreamGraph streamGraph) throws Exception {
         final JobClient jobClient = executeAsync(streamGraph);
@@ -2036,7 +2052,14 @@ public class StreamExecutionEnvironment {
                 executorFactory,
                 "Cannot find compatible factory for specified execution.target (=%s)",
                 configuration.get(DeploymentOptions.TARGET));
+        /*
+            Source Code Read and Make Self Mark,
 
+            @Author:    DepInjoy
+            @Brife:     执行streamGraph
+                            1. Executor的类型取决与运行模式：
+                                1.1 AbstractSessionClusterExecutor
+        */
         CompletableFuture<JobClient> jobClientFuture =
                 executorFactory
                         .getExecutor(configuration)

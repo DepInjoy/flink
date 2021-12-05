@@ -413,7 +413,12 @@ public abstract class ResourceManager<WorkerType extends ResourceIDRetrievable>
                 },
                 ioExecutor);
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:     接收到TaskExecutor向ResourceManager的注册请求
+    */
     @Override
     public CompletableFuture<RegistrationResponse> registerTaskExecutor(
             final TaskExecutorRegistration taskExecutorRegistration, final Time timeout) {
@@ -865,6 +870,16 @@ public abstract class ResourceManager<WorkerType extends ResourceIDRetrievable>
      * @param taskExecutorRegistration task executor registration parameters
      * @return RegistrationResponse
      */
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:     主要功能：
+                        1. 接收注册信息并维护
+                            1.1 taskExecutors存储taskExecutorResourceId和WorkerRegistration构成的map结构
+                        2. 维护和从节点间的心跳
+                            2.1 taskManagerHeartbeatManager
+    */
     private RegistrationResponse registerTaskExecutorInternal(
             TaskExecutorGateway taskExecutorGateway,
             TaskExecutorRegistration taskExecutorRegistration) {

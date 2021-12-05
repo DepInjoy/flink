@@ -545,7 +545,12 @@ public class StreamGraphGenerator {
         final TransformationTranslator<?, Transformation<?>> translator =
                 (TransformationTranslator<?, Transformation<?>>)
                         translatorMap.get(transform.getClass());
+        /*
+            Source Code Read and Make Self Mark,
 
+            @Author:    DepInjoy
+            @Brife:     执行翻译，将Tansformation转换成StreamNode
+        */
         Collection<Integer> transformedIds;
         if (translator != null) {
             transformedIds = translate(translator, transform);
@@ -815,7 +820,18 @@ public class StreamGraphGenerator {
 
         final TransformationTranslator.Context context =
                 new ContextImpl(this, streamGraph, slotSharingGroup, configuration);
+        /*
+            Source Code Read and Make Self Mark,
 
+            @Author:    DepInjoy
+            @Brife:     真正执行转换，shouldExecuteInBatchMode为true，代表批处理，false代表流处理,其中translator有多种实现：
+                            1. SimpleTransformationTranslator,
+                            2. SourceTransformationTranslator,对应数据源算子，若是Source则无边
+                            3. OneInputTransformationTranslator，一对一算子，如flatMap，map
+                            4. TowInputTransformationTranslator，2对1算子，如union join
+                            5. MultiInputTransformationTranslator，N对1算子
+                       Flink所有的算子最终会映射为这些Transformation
+        */
         return shouldExecuteInBatchMode
                 ? translator.translateForBatch(transform, context)
                 : translator.translateForStreaming(transform, context);

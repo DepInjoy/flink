@@ -30,6 +30,14 @@ import org.slf4j.Logger;
  * HeartbeatServices gives access to all services needed for heartbeating. This includes the
  * creation of heartbeat receivers and heartbeat senders.
  */
+/*
+    Source Code Read and Make Self Mark,
+
+    @Author:    DepInjoy
+    @Brife:     心跳服务，相关的重要的参数：
+                    1.心跳间隔时间，默认是10s
+                    2. 心跳超时时间，默认是50s
+*/
 public class HeartbeatServices {
 
     /** Heartbeat interval for the created services. */
@@ -72,6 +80,12 @@ public class HeartbeatServices {
      * @param <O> Type of the outgoing payload
      * @return A new HeartbeatManager instance
      */
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:     创建心跳管理器
+    */
     public <I, O> HeartbeatManager<I, O> createHeartbeatManager(
             ResourceID resourceId,
             HeartbeatListener<I, O> heartbeatListener,
@@ -100,6 +114,12 @@ public class HeartbeatServices {
      * @param <O> Type of the outgoing payload
      * @return A new HeartbeatManager instance which actively sends heartbeats
      */
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:     创建心跳发送器
+    */
     public <I, O> HeartbeatManager<I, O> createHeartbeatManagerSender(
             ResourceID resourceId,
             HeartbeatListener<I, O> heartbeatListener,

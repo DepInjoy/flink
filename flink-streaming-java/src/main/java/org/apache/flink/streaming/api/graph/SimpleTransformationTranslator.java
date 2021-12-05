@@ -51,7 +51,12 @@ public abstract class SimpleTransformationTranslator<OUT, T extends Transformati
 
         return transformedIds;
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:
+    */
     @Override
     public final Collection<Integer> translateForStreaming(
             final T transformation, final Context context) {

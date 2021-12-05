@@ -680,7 +680,14 @@ public class StreamGraph implements Pipeline {
                             partitioner,
                             outputTag,
                             exchangeMode);
+            /*
+                Source Code Read and Make Self Mark,
 
+                @Author:    DepInjoy
+                @Brife:     给StreamEdge设置上下游顶点
+                                1. 给上游顶点添加出边
+                                2. 给下游顶点添加入边
+            */
             getStreamNode(edge.getSourceId()).addOutEdge(edge);
             getStreamNode(edge.getTargetId()).addInEdge(edge);
         }

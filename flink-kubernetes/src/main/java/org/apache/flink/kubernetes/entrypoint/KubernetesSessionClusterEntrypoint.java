@@ -58,6 +58,12 @@ public class KubernetesSessionClusterEntrypoint extends SessionClusterEntrypoint
         final ClusterEntrypoint entrypoint =
                 new KubernetesSessionClusterEntrypoint(
                         KubernetesEntrypointUtils.loadConfiguration(dynamicParameters));
+        /*
+            Source Code Read and Make Self Mark,
+
+            @Author:    DepInjoy
+            @Brife:
+        */
         ClusterEntrypoint.runClusterEntrypoint(entrypoint);
     }
 }

@@ -347,7 +347,12 @@ public class RestClient implements AutoCloseableAsync {
                                     .map(RestAPIVersion::getURLVersionPrefix)
                                     .collect(Collectors.joining(","))));
         }
+        /*
+            Source Code Read and Make Self Mark,
 
+            @Author:    DepInjoy
+            @Brife:     拼装得到请求的URL，Rest方式即HTTP
+        */
         String versionedHandlerURL =
                 "/" + apiVersion.getURLVersionPrefix() + messageHeaders.getTargetRestEndpointURL();
         String targetUrl = MessageParameters.resolveUrl(versionedHandlerURL, messageParameters);
@@ -490,6 +495,12 @@ public class RestClient implements AutoCloseableAsync {
                                     throw new IOException(
                                             "Netty pipeline was not properly initialized.");
                                 } else {
+                                    /*
+                                        Source Code Read and Make Self Mark,
+
+                                        @Author:    DepInjoy
+                                        @Brife:     发送请求数据
+                                    */
                                     httpRequest.writeTo(channel);
                                     future = handler.getJsonFuture();
                                     success = true;

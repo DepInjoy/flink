@@ -1192,6 +1192,13 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
         }
     }
 
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:     JobMaster监听ResourceManager
+                    如果ResourceManager发生了改变，则notifyLeaderAddress方法会被执行
+    */
     private class ResourceManagerLeaderListener implements LeaderRetrievalListener {
 
         @Override

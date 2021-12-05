@@ -90,6 +90,15 @@ public class ZooKeeperLeaderElectionDriver
      * @param fatalErrorHandler Fatal error handler
      * @param leaderContenderDescription Leader contender description
      */
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:     Zookeeper的Leader选举，其中
+                        1. LeaderLatch，基于ZK的Curator框架实现的分布式锁方案选举组件,通过回调机制实现
+                        2. TreeCache，于ZK的Curator框架实现的znode节点改变监听
+
+    */
     public ZooKeeperLeaderElectionDriver(
             CuratorFramework client,
             String path,
@@ -115,7 +124,14 @@ public class ZooKeeperLeaderElectionDriver
         client.getUnhandledErrorListenable().addListener(this);
 
         running = true;
+        /*
+            Source Code Read and Make Self Mark,
 
+            @Author:    DepInjoy
+            @Brife:     开启选举
+                        1. 如果选举成功，回调isleader()
+                        2. 如果选举失败，回调notLeader()方法
+        */
         leaderLatch.addListener(this);
         leaderLatch.start();
 

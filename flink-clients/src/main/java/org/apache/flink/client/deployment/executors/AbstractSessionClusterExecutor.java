@@ -57,7 +57,16 @@ public class AbstractSessionClusterExecutor<
     public AbstractSessionClusterExecutor(@Nonnull final ClientFactory clusterClientFactory) {
         this.clusterClientFactory = checkNotNull(clusterClientFactory);
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:     将StreamGragh转化为JobGraph(PipelineExecutorUtils.getJobGraph)
+        @Param:     Pipeline即StreamGragh
+                        1. 启动一个Netty客户端RestClusterClient,getClusterClient
+                        2. 提交JobGraph到WebMonitorEndPoint，clusterClient.submitJob()
+
+    */
     @Override
     public CompletableFuture<JobClient> execute(
             @Nonnull final Pipeline pipeline,

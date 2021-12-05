@@ -42,7 +42,22 @@ import static org.apache.flink.util.Preconditions.checkState;
  */
 abstract class AbstractOneInputTransformationTranslator<IN, OUT, OP extends Transformation<OUT>>
         extends SimpleTransformationTranslator<OUT, OP> {
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:     主要完成两件工作：
+                        1. 创建StreamNode
+                            1.1 streamGraph.addOperator
+                        2. 创建StreamEdge，且维护StreamNode和StreamEdge信息
+                            2.1 streamGraph.addEdge创建StreamEdge
+                                2.1.1 inputId为上游输入顶点
+                                2.1.2 transformationId为当前transformation的ID
+                            2.2 维护StreamNode和StreamEdge信息,给treamEdge设置上下游顶点
+                                相关实现在flink/streaming/api/graph/StreamGraph.java中的addEdgeInternal API
+                                2.2.1 给上游顶点添加出边
+                                2.2.2 给下游顶点添加入边
+    */
     protected Collection<Integer> translateInternal(
             final Transformation<OUT> transformation,
             final StreamOperatorFactory<OUT> operatorFactory,

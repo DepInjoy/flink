@@ -294,7 +294,12 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
     // ------------------------------------------------------
     // RPCs
     // ------------------------------------------------------
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:
+    */
     @Override
     public CompletableFuture<Acknowledge> submitJob(JobGraph jobGraph, Time timeout) {
         log.info(
@@ -370,7 +375,17 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
 
         return false;
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:     提交Job
+                        1. 持久化存儲Job信息，waitForTerminatingJob
+                            1.1 持久化到HDFS，为了容错，得到句柄对象
+                            1.2 将句柄存储在ZK
+                        2. 提交运行Job，persistAndRunJob -> runJob
+
+    */
     private CompletableFuture<Acknowledge> internalSubmitJob(JobGraph jobGraph) {
         log.info("Submitting job '{}' ({}).", jobGraph.getName(), jobGraph.getJobID());
 
@@ -403,7 +418,12 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
         jobGraphWriter.putJobGraph(jobGraph);
         runJob(jobGraph, ExecutionType.SUBMISSION);
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:     启动JobManagerRunner，在它的内部启动一个JobMaster，JobMaster启动完成需要注册和维持心跳
+    */
     private void runJob(JobGraph jobGraph, ExecutionType executionType) throws Exception {
         Preconditions.checkState(!runningJobs.containsKey(jobGraph.getJobID()));
         long initializationTimestamp = System.currentTimeMillis();

@@ -101,6 +101,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * <p>Specialization of this class can be used for the session mode and the per-job mode
  */
+
+/**
+ * self-mark DepInjoy
+ *
+ */
 public abstract class ClusterEntrypoint implements AutoCloseableAsync, FatalErrorHandler {
 
     public static final ConfigOption<String> INTERNAL_CLUSTER_EXECUTION_MODE =
@@ -175,6 +180,12 @@ public abstract class ClusterEntrypoint implements AutoCloseableAsync, FatalErro
         return terminationFuture;
     }
 
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:
+    */
     public void startCluster() throws ClusterEntrypointException {
         LOG.info("Starting {}.", getClass().getSimpleName());
 
@@ -236,10 +247,30 @@ public abstract class ClusterEntrypoint implements AutoCloseableAsync, FatalErro
 
         return SecurityUtils.getInstalledContext();
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:     启动主节点的核心代码，主要包括：
+                        1. 启动各种基础服务
+                        2. 创建主节点重要的三个工作组件的工厂实例
+                            2.1 RestServer Factory
+                            2.2
+                            2.3
+                        3. 启动三个组件：
+                            3.1 RestServer
+                            3.2 Dispatcher
+                            3.3 ResourceManager
+    */
     private void runCluster(Configuration configuration, PluginManager pluginManager)
             throws Exception {
         synchronized (lock) {
+            /*
+                Source Code Read and Make Self Mark,
+
+                @Author:    DepInjoy
+                @Brife:     初始化各种服务
+            */
             initializeServices(configuration, pluginManager);
 
             // write host information into configuration
@@ -354,7 +385,12 @@ public abstract class ClusterEntrypoint implements AutoCloseableAsync, FatalErro
             return String.valueOf(configuration.getInteger(JobManagerOptions.PORT));
         }
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:     高可用服务，HighAvailabilityServices是高可用服务的抽象
+    */
     protected HighAvailabilityServices createHaServices(
             Configuration configuration, Executor executor, RpcSystemUtils rpcSystemUtils)
             throws Exception {
@@ -609,7 +645,12 @@ public abstract class ClusterEntrypoint implements AutoCloseableAsync, FatalErro
     // --------------------------------------------------
     // Helper methods
     // --------------------------------------------------
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:
+    */
     public static void runClusterEntrypoint(ClusterEntrypoint clusterEntrypoint) {
 
         final String clusterEntrypointName = clusterEntrypoint.getClass().getSimpleName();

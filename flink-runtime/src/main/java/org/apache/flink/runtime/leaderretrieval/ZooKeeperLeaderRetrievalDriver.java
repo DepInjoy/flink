@@ -80,6 +80,13 @@ public class ZooKeeperLeaderRetrievalDriver
      *     leader information is being cleared
      * @param fatalErrorHandler Fatal error handler
      */
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:     监听节点的变化，即znode的nodeChange事件，对应于
+                        retrieveLeaderInformationFromZooKeeper方法
+    */
     public ZooKeeperLeaderRetrievalDriver(
             CuratorFramework client,
             String path,
@@ -122,7 +129,12 @@ public class ZooKeeperLeaderRetrievalDriver
 
         cache.close();
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:
+    */
     private void retrieveLeaderInformationFromZooKeeper() {
         try {
             LOG.debug("Leader node has changed.");

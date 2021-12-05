@@ -94,6 +94,14 @@ public class WordCount {
             counts.print();
         }
         // execute program
+        /*
+            Source Code Read and Make Self Mark,
+
+            @Author:    DepInjoy
+            @Brife:     执行，在此之前进行了一系列的转换流程：
+                            1. 转换流程：Function -> StreamOperator -> Transformation
+                            2. 将每个算子的Transformation抽象加入到env的成员集合(transformations)中。
+        */
         env.execute("Streaming WordCount");
     }
 

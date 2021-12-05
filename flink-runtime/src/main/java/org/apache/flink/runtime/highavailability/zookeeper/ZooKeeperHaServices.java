@@ -96,6 +96,14 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
  * HighAvailabilityOptions#HA_CLUSTER_ID}. All nodes with the same cluster id will join the same
  * cluster and participate in the execution of the same set of jobs.
  */
+/*
+    Source Code Read and Make Self Mark,
+
+    @Author:    DepInjoy
+    @Brife:     Zookeeper的高可用服务，主要提供两个功能：
+                    1 选举，在Flink集群中选举确定哪个Node是Active
+                    2 监听，每个从节点知悉哪个是主节点
+*/
 public class ZooKeeperHaServices extends AbstractHaServices {
 
     // ------------------------------------------------------------------------
@@ -130,11 +138,22 @@ public class ZooKeeperHaServices extends AbstractHaServices {
         return new ZooKeeperRunningJobsRegistry(client, configuration);
     }
 
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:     选举服务
+    */
     @Override
     protected LeaderElectionService createLeaderElectionService(String leaderPath) {
         return ZooKeeperUtils.createLeaderElectionService(client, leaderPath);
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:     监听
+    */
     @Override
     protected LeaderRetrievalService createLeaderRetrievalService(String leaderPath) {
         return ZooKeeperUtils.createLeaderRetrievalService(client, leaderPath, configuration);

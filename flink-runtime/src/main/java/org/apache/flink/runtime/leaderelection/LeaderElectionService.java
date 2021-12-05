@@ -34,6 +34,12 @@ import java.util.UUID;
  * election service, that the contender has accepted the leadership specified and that the leader
  * session id as well as the leader address can now be published for leader retrieval services.
  */
+/*
+    Source Code Read and Make Self Mark,
+
+    @Author:    DepInjoy
+    @Brife:     Leader选举基类
+*/
 public interface LeaderElectionService {
 
     /**

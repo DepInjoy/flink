@@ -302,7 +302,15 @@ public class RestClusterClient<T> implements ClusterClient<T> {
                 () -> requestJobResultInternal(jobId);
         return retry(operation, unknownJobStateRetryable);
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:     完成
+                        1. 将JobGraph下乳到本地的jobGraphFile
+                        2. 生成jobGraphFile文件
+                        3. 将jobGraphFile写入中文件
+    */
     @Override
     public CompletableFuture<JobID> submitJob(@Nonnull JobGraph jobGraph) {
         CompletableFuture<java.nio.file.Path> jobGraphFileFuture =
@@ -379,9 +387,14 @@ public class RestClusterClient<T> implements ClusterClient<T> {
                             return Tuple2.of(
                                     requestBody, Collections.unmodifiableCollection(filesToUpload));
                         });
+        /*
+            Source Code Read and Make Self Mark,
 
+            @Author:    DepInjoy
+            @Brife:     发送请求
+        */
         final CompletableFuture<JobSubmitResponseBody> submissionFuture =
-                requestFuture.thenCompose(
+                requestFuture.thenCompose(  // 文件准备完成，则执行后面的
                         requestAndFileUploads -> {
                             LOG.info(
                                     "Submitting job '{}' ({}).",
@@ -845,12 +858,12 @@ public class RestClusterClient<T> implements ClusterClient<T> {
                     BiConsumer<String, Throwable> consumer) {
         return retry(
                 () ->
-                        getWebMonitorBaseUrl()
+                        getWebMonitorBaseUrl() // 获取主节点上WebMonitorEndPoint组件的Base URL
                                 .thenCompose(
                                         webMonitorBaseUrl -> {
                                             try {
                                                 final CompletableFuture<P> future =
-                                                        restClient.sendRequest(
+                                                        restClient.sendRequest( // 根据Base URL获取到WebMonitorEndPoint的Host和Port
                                                                 webMonitorBaseUrl.getHost(),
                                                                 webMonitorBaseUrl.getPort(),
                                                                 messageHeaders,

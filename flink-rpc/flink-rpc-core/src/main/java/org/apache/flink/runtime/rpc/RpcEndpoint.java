@@ -79,6 +79,13 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
  * <p>The running state can be queried in a RPC method handler or in the main thread by calling
  * {@link #isRunning()} method.
  */
+
+/**
+ * self-mark DepInjoy
+ *    Flink RPC通信组件抽象，类似于Akka中的Actor
+ *
+ */
+
 public abstract class RpcEndpoint implements RpcGateway, AutoCloseableAsync {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());

@@ -241,7 +241,12 @@ public class CliFrontend {
                 getEffectiveConfiguration(activeCommandLine, commandLine, programOptions, jobJars);
 
         LOG.debug("Effective executor configuration: {}", effectiveConfiguration);
+        /*
+            Source Code Read and Make Self Mark,
 
+            @Author:    DepInjoy
+            @Brife:     构建PackagedProgram对象，提交执行executeProgram
+        */
         try (PackagedProgram program = getPackagedProgram(programOptions, effectiveConfiguration)) {
             executeProgram(effectiveConfiguration, program);
         }
@@ -806,7 +811,12 @@ public class CliFrontend {
     // --------------------------------------------------------------------------------------------
     //  Interaction with programs and JobManager
     // --------------------------------------------------------------------------------------------
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:
+    */
     protected void executeProgram(final Configuration configuration, final PackagedProgram program)
             throws ProgramInvocationException {
         ClientUtils.executeProgram(
@@ -1032,6 +1042,12 @@ public class CliFrontend {
      * @param args command line arguments of the client.
      * @return The return code of the program
      */
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:
+    */
     public int parseAndRun(String[] args) {
 
         // check for action
@@ -1110,6 +1126,18 @@ public class CliFrontend {
     }
 
     /** Submits the job based on the arguments. */
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:     启动JVM，执行一些准备工作并启动提交的程序
+                    1. 准备工作，最终形成PackagedProgram
+                        1.1 准备Jar包
+                        1.2 准备配置
+                        1.3 其他的配置文件
+                    2. 执行提交
+                        2.1 通过反射方式找到业务代码的main方法并执行
+    */
     public static void main(final String[] args) {
         EnvironmentInformation.logEnvironmentInfo(LOG, "Command Line Client", args);
 

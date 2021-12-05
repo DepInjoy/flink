@@ -93,7 +93,15 @@ public class HighAvailabilityServicesUtils {
             throws Exception {
 
         HighAvailabilityMode highAvailabilityMode = HighAvailabilityMode.fromConfig(configuration);
+        /*
+            Source Code Read and Make Self Mark,
 
+            @Author:    DepInjoy
+            @Brife:     构建高可用服务，通过传递参数来确定构造高可用服务的类型
+                            1.1 NONE 无高可用服务
+                            1.2 Zookeeper高可用服务，ZooKeeperHaServices
+                            1.3
+        */
         switch (highAvailabilityMode) {
             case NONE:
                 final Tuple2<String, Integer> hostnamePort = getJobManagerAddress(configuration);

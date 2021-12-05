@@ -216,6 +216,15 @@ public class PackagedProgram implements AutoCloseable {
      * This method assumes that the context environment is prepared, or the execution will be a
      * local execution by default.
      */
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:     通过反射方式调用用户应用程序的main方法
+                        1. mainClass是用户的Application主类
+                        2. callMainMethod通过反射方式执行用户Application的main方法
+
+    */
     public void invokeInteractiveModeForExecution() throws ProgramInvocationException {
         FlinkSecurityManager.monitorUserSystemExitForCurrentThread();
         try {
@@ -319,7 +328,12 @@ public class PackagedProgram implements AutoCloseable {
         return Modifier.isStatic(mainMethod.getModifiers())
                 && Modifier.isPublic(mainMethod.getModifiers());
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:     通过反射调用业务主类的main方法，mainMethod.invoke进行具体的执行
+    */
     private static void callMainMethod(Class<?> entryClass, String[] args)
             throws ProgramInvocationException {
         Method mainMethod;

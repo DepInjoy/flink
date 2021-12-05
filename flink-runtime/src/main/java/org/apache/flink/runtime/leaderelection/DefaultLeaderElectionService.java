@@ -78,6 +78,13 @@ public class DefaultLeaderElectionService
         running = false;
     }
 
+    /*
+        Source Code Read and Make Self Mark,
+
+        @Author:    DepInjoy
+        @Brife:     开启选举，leaderContender可能有四类对象：
+                        1.
+    */
     @Override
     public final void start(LeaderContender contender) throws Exception {
         checkNotNull(contender, "Contender must not be null.");

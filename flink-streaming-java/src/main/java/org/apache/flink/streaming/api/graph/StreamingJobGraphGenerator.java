@@ -159,7 +159,16 @@ public class StreamingJobGraphGenerator {
 
         jobGraph = new JobGraph(jobID, streamGraph.getJobName());
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:     主要完成：
+                        1. 将StreamGraph转换成JobGraph，setChaining
+                        2. 设置StreamEdge，setPhysicalEdges
+                        3. 设置SlotSharing和CoLocation，setSlotSharingAndCoLocation
+                        4. 设置内存比例，setManagedMemoryFraction
+    */
     private JobGraph createJobGraph() {
         preValidate();
         jobGraph.setJobType(streamGraph.getJobType());
@@ -400,7 +409,12 @@ public class StreamingJobGraphGenerator {
             List<StreamEdge> nonChainableOutputs = new ArrayList<StreamEdge>();
 
             StreamNode currentNode = streamGraph.getStreamNode(currentNodeId);
+            /*
+                Source Code Read and Make Self Mark,
 
+                @Author:    DepInjoy
+                @Brife:     判断当前顶点和下游顶点间关系，是否可以chain
+            */
             for (StreamEdge outEdge : currentNode.getOutEdges()) {
                 if (isChainable(outEdge, streamGraph)) {
                     chainableOutputs.add(outEdge);
@@ -869,7 +883,23 @@ public class StreamingJobGraphGenerator {
                                 + streamGraph.getGlobalStreamExchangeMode());
         }
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:     判断是否可以chain
+                        1. 下游顶点的入度为1(即下游节点没有来自其他节点的输入)
+                        2. isChainableInput
+                            2.2. 上下游节点都在同一个Slot Group
+                            2.3 areOperatorsChainable
+                                2.3.3 上下游算子都不为空
+                                2.3.4 下游算子不能是Yielding算子
+                                2.3.5 下游算子的chain策略是ALWAYS(可与上下游链接，map flatMap filterd默认是ALWAYS)或HEAD(只能与下游链接，source是HEAD)
+                            2.6. 两个节点间物理分区逻辑是ForwardPartitioner
+                            2.7. 两个算子间的shuffle方式不等于批处理
+                            2.8. 上下游算子并行度一致
+                            2.9. 用户没有禁用chain
+    */
     public static boolean isChainable(StreamEdge edge, StreamGraph streamGraph) {
         StreamNode downStreamVertex = streamGraph.getTargetVertex(edge);
 
@@ -879,12 +909,17 @@ public class StreamingJobGraphGenerator {
     private static boolean isChainableInput(StreamEdge edge, StreamGraph streamGraph) {
         StreamNode upStreamVertex = streamGraph.getSourceVertex(edge);
         StreamNode downStreamVertex = streamGraph.getTargetVertex(edge);
-
+            // 上下游节点都在同一个Slot Group
         if (!(upStreamVertex.isSameSlotSharingGroup(downStreamVertex)
+                // 三个判断条件
                 && areOperatorsChainable(upStreamVertex, downStreamVertex, streamGraph)
+                // 两个节点间物理分区逻辑是ForwardPartitioner
                 && (edge.getPartitioner() instanceof ForwardPartitioner)
+                // 两个算子间的shuffle方式不等于批处理
                 && edge.getExchangeMode() != StreamExchangeMode.BATCH
+                // 上下游算子并行度一致
                 && upStreamVertex.getParallelism() == downStreamVertex.getParallelism()
+                // 用户没有禁用chain
                 && streamGraph.isChainingEnabled())) {
 
             return false;
@@ -906,6 +941,7 @@ public class StreamingJobGraphGenerator {
             StreamNode upStreamVertex, StreamNode downStreamVertex, StreamGraph streamGraph) {
         StreamOperatorFactory<?> upStreamOperator = upStreamVertex.getOperatorFactory();
         StreamOperatorFactory<?> downStreamOperator = downStreamVertex.getOperatorFactory();
+        // 上下游算子都不为空
         if (downStreamOperator == null || upStreamOperator == null) {
             return false;
         }
@@ -913,6 +949,7 @@ public class StreamingJobGraphGenerator {
         // yielding operators cannot be chained to legacy sources
         // unfortunately the information that vertices have been chained is not preserved at this
         // point
+        // 下游算子不能是Yielding算子
         if (downStreamOperator instanceof YieldingOperatorFactory
                 && getHeadOperator(upStreamVertex, streamGraph).isLegacySource()) {
             return false;
@@ -921,7 +958,7 @@ public class StreamingJobGraphGenerator {
         // we use switch/case here to make sure this is exhaustive if ever values are added to the
         // ChainingStrategy enum
         boolean isChainable;
-
+        // 下游算子的chain策略是ALWAYS(可与上下游链接，map flatMap filterd默认是ALWAYS)或HEAD(只能与下游链接，source是HEAD)
         switch (upStreamOperator.getChainingStrategy()) {
             case NEVER:
                 isChainable = false;

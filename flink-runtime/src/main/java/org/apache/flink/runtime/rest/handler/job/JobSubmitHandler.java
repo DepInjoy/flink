@@ -53,6 +53,12 @@ import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 /** This handler can be used to submit jobs to a Flink cluster. */
+/*
+    Source Code Read and Make Self Mark,
+
+    @Author:    DepInjoy
+    @Brife:     执行请求处理，运行在服务端
+*/
 public final class JobSubmitHandler
         extends AbstractRestHandler<
                 DispatcherGateway,
@@ -77,7 +83,14 @@ public final class JobSubmitHandler
         this.executor = executor;
         this.configuration = configuration;
     }
+    /*
+        Source Code Read and Make Self Mark,
 
+        @Author:    DepInjoy
+        @Brife:     执行请求处理
+        @Param:     request,Request请求对象
+                    gateway，DisPatcher的代理
+    */
     @Override
     protected CompletableFuture<JobSubmitResponseBody> handleRequest(
             @Nonnull HandlerRequest<JobSubmitRequestBody, EmptyMessageParameters> request,
@@ -107,7 +120,7 @@ public final class JobSubmitHandler
                             JobSubmitRequestBody.FIELD_NAME_JOB_GRAPH),
                     HttpResponseStatus.BAD_REQUEST);
         }
-
+        // 加载JobGraphFile，恢复出JobGraph对象(反序列化)
         CompletableFuture<JobGraph> jobGraphFuture = loadJobGraph(requestBody, nameToFile);
 
         Collection<Path> jarFiles = getJarFilesToUpload(requestBody.jarFileNames, nameToFile);
@@ -117,11 +130,16 @@ public final class JobSubmitHandler
 
         CompletableFuture<JobGraph> finalizedJobGraphFuture =
                 uploadJobGraphFiles(gateway, jobGraphFuture, jarFiles, artifacts, configuration);
+        /*
+            Source Code Read and Make Self Mark,
 
+            @Author:    DepInjoy
+            @Brife:     将JobGraph提交给DisPatcher，DisPatcher负责启动JobManagerRunner，内部启动JobMaster
+
+        */
         CompletableFuture<Acknowledge> jobSubmissionFuture =
                 finalizedJobGraphFuture.thenCompose(
                         jobGraph -> gateway.submitJob(jobGraph, timeout));
-
         return jobSubmissionFuture.thenCombine(
                 jobGraphFuture,
                 (ack, jobGraph) -> new JobSubmitResponseBody("/jobs/" + jobGraph.getJobID()));
